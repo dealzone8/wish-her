@@ -124,6 +124,11 @@ button {
   </style>
 </head>
 <body>
+
+<audio id="bgMusic" loop>
+  <source src="romantic.mp3" type="audio/mpeg">
+</audio>
+  
   <div class="floating-emoji" style="top: 10%; left: 5%">💖</div>
   <div class="floating-emoji" style="top: 20%; right: 10%">🌸</div>
   <div class="floating-emoji" style="top: 60%; left: 8%">💌</div>
@@ -218,6 +223,30 @@ for (let i = 1; i <= 6; i++) {
   slider.appendChild(img);
 }
   });
+
+let musicStarted = false;
+
+function startMusic() {
+  if (musicStarted) return;
+
+  const bgMusic = document.getElementById("bgMusic");
+  if (bgMusic) {
+    bgMusic.volume = 0.1;
+    bgMusic.play().then(() => {
+      musicStarted = true;
+      console.log("Music started");
+    }).catch((err) => {
+      console.warn("Music autoplay blocked:", err);
+    });
+  }
+}
+
+document.body.addEventListener("click", startMusic, { once: true });
+document.body.addEventListener("touchstart", startMusic, { once: true });
+
+
+
+  
 </script>
     </body>
 </html>
