@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank You!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #fff0f6, #ffe6f0);
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    h1 {
+      color: #d63384;
+      font-size: 2.5rem;
+      margin-top: 100px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .back-btn {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 25px;
+      background-color: #d63384;
+      color: white;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background-color: #c21760;
+    }
+
+    .emoji {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .floating-emoji {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.3;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); opacity: 0.2; }
+      50% { transform: translateY(-20px); opacity: 0.4; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Emojis -->
+  <div class="floating-emoji" style="top: 10%; left: 5%;">&#128150;</div>
+  <div class="floating-emoji" style="top: 20%; right: 10%;">&#127800;</div>
+  <div class="floating-emoji" style="top: 60%; left: 8%;">&#128140;</div>
+  <div class="floating-emoji" style="top: 70%; right: 15%;">&#127881;</div>
+  <div class="floating-emoji" style="top: 30%; left: 85%;">&#128149;</div>
+
+  <canvas id="confetti"></canvas>
+
+  <div class="emoji">&#128140;&#127881;</div>
+  <h1>Thank You for Your Wish!</h1>
+  <p>Your message has been delivered with love &#10024;</p>
+  <a class="back-btn" href="index.html">&#8592; Back to Home</a>
+
+  <script>
+    // ð Confetti animation
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiCount = 150;
+    const confetti = [];
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    for (let i = 0; i < confettiCount; i++) {
+      confetti.push({
+        x: random(0, canvas.width),
+        y: random(0, canvas.height),
+        r: random(2, 6),
+        d: random(1, 5),
+        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+        tilt: random(-10, 10),
+        tiltAngle: 0,
+        tiltAngleIncrement: random(0.05, 0.12)
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach((c, i) => {
+        ctx.beginPath();
+        ctx.lineWidth = c.r;
+        ctx.strokeStyle = c.color;
+        ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+        ctx.stroke();
+      });
+      update();
+    }
+
+    function update() {
+      confetti.forEach((c, i) => {
+        c.y += Math.cos(c.d) + 1 + c.r / 2;
+        c.tiltAngle += c.tiltAngleIncrement;
+        c.tilt = Math.sin(c.tiltAngle) * 15;
+
+        if (c.y > canvas.height) {
+          c.y = -10;
+          c.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    function loop() {
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+
+</body>
+</htm>
