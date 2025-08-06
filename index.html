@@ -294,33 +294,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load images dynamically (pic1.jpg to pic6.jpg)
   const slider = document.getElementById('slider');
-  const oneTimeMsg = document.getElementById('oneTimeMessage');
+const oneTimeMsg = document.getElementById('oneTimeMessage');
 
-  if (localStorage.getItem("alreadyViewed")) {
-    slider.style.display = "none";
-    oneTimeMsg.style.display = "flex";
-  } else {
-    for (let i = 1; i <= 6; i++) {
-      const img = document.createElement('img');
-      img.src = `pic${i}.jpg`;
-      img.alt = `Pic ${i}`;
-      img.onerror = () => {
-        img.src = 'placeholder.jpg'; // fallback
-        img.alt = 'Image not found';
-      };
-      slider.appendChild(img);
+// â Always load the images first
+for (let i = 1; i <= 6; i++) {
+  const img = document.createElement('img');
+  img.src = `pic${i}.jpg`;
+  img.alt = `Pic ${i}`;
+  img.onerror = () => {
+    img.src = 'placeholder.jpg'; // fallback
+    img.alt = 'Image not found';
+  };
+  slider.appendChild(img);
+}
+
+// â Then decide what to show
+if (localStorage.getItem("alreadyViewed")) {
+  slider.style.display = "none";
+  oneTimeMsg.style.display = "flex";
+} else {
+  slider.addEventListener("scroll", () => {
+    const scrollLeft = slider.scrollLeft;
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+    if (scrollLeft >= maxScrollLeft - 5) {
+      localStorage.setItem("alreadyViewed", "true");
+      slider.style.display = "none";
+      oneTimeMsg.style.display = "flex";
     }
-
-    slider.addEventListener("scroll", () => {
-      const scrollLeft = slider.scrollLeft;
-      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-
-      if (scrollLeft >= maxScrollLeft - 5) {
-        localStorage.setItem("alreadyViewed", "true");
-        slider.style.display = "none";
-        oneTimeMsg.style.display = "flex";
-      }
-    });
   }
 
   // Music play once on interaction
