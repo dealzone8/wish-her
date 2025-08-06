@@ -277,21 +277,23 @@ img, .memory-image {
     // Floating emoji generator
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Floating emoji generator
-  const emojis = ['💖','🌸','💫','🎀','💕','💘','🌷','✨','🌟','💓'];
+  // Floating emoji generator (HTML-decimal encoded)
+  const emojis = ['&#128525;', '&#128151;', '&#127881;', '&#127775;', '&#10024;', '&#128147;', '&#129321;', '&#127881;', '&#128153;', '&#127872;'];
+
   function createEmoji() {
     const emoji = document.createElement('div');
     emoji.classList.add('floating-emoji');
-    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
     emoji.style.left = Math.random() * 100 + 'vw';
     emoji.style.animationDuration = (4 + Math.random() * 6) + 's';
     document.body.appendChild(emoji);
     setTimeout(() => emoji.remove(), 10000);
   }
+
   setInterval(createEmoji, 800);
 
-// Load images dynamically (pic1.jpg to pic6.jpg)
-const slider = document.getElementById('slider');
+  // Load images dynamically (pic1.jpg to pic6.jpg)
+  const slider = document.getElementById('slider');
   const oneTimeMsg = document.getElementById('oneTimeMessage');
 
   if (localStorage.getItem("alreadyViewed")) {
@@ -321,47 +323,49 @@ const slider = document.getElementById('slider');
     });
   }
 
-let musicStarted = false;
+  // Music play once on interaction
+  let musicStarted = false;
 
-function startMusic() {
-  if (musicStarted) return;
+  function startMusic() {
+    if (musicStarted) return;
 
-  const bgMusic = document.getElementById("bgMusic");
-  if (bgMusic) {
-    bgMusic.volume = 0.5;
-    bgMusic.play().then(() => {
-      musicStarted = true;
-      console.log("Music started");
-    }).catch((err) => {
-      console.warn("Music autoplay blocked:", err);
-    });
+    const bgMusic = document.getElementById("bgMusic");
+    if (bgMusic) {
+      bgMusic.volume = 0.5;
+      bgMusic.play().then(() => {
+        musicStarted = true;
+        console.log("Music started");
+      }).catch((err) => {
+        console.warn("Music autoplay blocked:", err);
+      });
+    }
   }
-}
 
-document.body.addEventListener("click", startMusic, { once: true });
-document.body.addEventListener("touchstart", startMusic, { once: true });
+  document.body.addEventListener("click", startMusic, { once: true });
+  document.body.addEventListener("touchstart", startMusic, { once: true });
 
+  // Block right-click
+  document.addEventListener("contextmenu", e => e.preventDefault());
 
-// Disable context menu (right-click / long-press)
-document.addEventListener("contextmenu", e => e.preventDefault());
+  // Block select
+  document.addEventListener("selectstart", e => e.preventDefault());
 
-// Disable text or image selection
-document.addEventListener("selectstart", e => e.preventDefault());
+  // Block copy, cut, paste
+  ["copy", "cut", "paste"].forEach(event =>
+    document.addEventListener(event, e => e.preventDefault())
+  );
 
-// Disable copy, cut, paste
-["copy", "cut", "paste"].forEach(event =>
-  document.addEventListener(event, e => e.preventDefault())
-);
+  // Disable drag and hold on images
+  document.querySelectorAll("img, .memory-image").forEach(el => {
+    el.setAttribute("draggable", "false");
+    el.setAttribute("oncontextmenu", "return false");
+    el.setAttribute("onmousedown", "return false");
+  });
 
-// Disable drag & hold on images or custom image containers
-document.querySelectorAll("img, .memory-image").forEach(el => {
-  el.setAttribute("draggable", "false");
-  el.setAttribute("oncontextmenu", "return false");
-  el.setAttribute("onmousedown", "return false");
-});
-
-document.addEventListener('gesturestart', function (e) {
-  e.preventDefault();
+  // Disable zoom gestures
+  document.addEventListener('gesturestart', function (e) {
+    e.preventDefault();
+  });
 });
 </script>
     </body>
