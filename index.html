@@ -290,20 +290,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setInterval(createEmoji, 800);
 
-  // Load images dynamically (pic1.jpg to pic6.jpg)
 // Load images dynamically (pic1.jpg to pic6.jpg)
 const slider = document.getElementById('slider');
-for (let i = 1; i <= 6; i++) {
-  const img = document.createElement('img');
-  img.src = `pic${i}.jpg`;
-  img.alt = `Pic ${i}`;
-  img.onerror = () => {
-    img.src = 'placeholder.jpg'; // fallback
-    img.alt = 'Image not found';
-  };
-  slider.appendChild(img);
-}
-  });
+  const oneTimeMsg = document.getElementById('oneTimeMessage');
+
+  if (localStorage.getItem("alreadyViewed")) {
+    slider.style.display = "none";
+    oneTimeMsg.style.display = "flex";
+  } else {
+    for (let i = 1; i <= 6; i++) {
+      const img = document.createElement('img');
+      img.src = `pic${i}.jpg`;
+      img.alt = `Pic ${i}`;
+      img.onerror = () => {
+        img.src = 'placeholder.jpg'; // fallback
+        img.alt = 'Image not found';
+      };
+      slider.appendChild(img);
+    }
+
+    slider.addEventListener("scroll", () => {
+      const scrollLeft = slider.scrollLeft;
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+      if (scrollLeft >= maxScrollLeft - 5) {
+        localStorage.setItem("alreadyViewed", "true");
+        slider.style.display = "none";
+        oneTimeMsg.style.display = "flex";
+      }
+    });
+  }
 
 let musicStarted = false;
 
@@ -346,27 +362,6 @@ document.querySelectorAll("img, .memory-image").forEach(el => {
 
 document.addEventListener('gesturestart', function (e) {
   e.preventDefault();
-});
-
-  document.addEventListener("DOMContentLoaded", () => {
-  const slider = document.getElementById('slider');
-  const oneTimeMsg = document.getElementById('oneTimeMessage');
-
-  if (localStorage.getItem("alreadyViewed")) {
-    slider.style.display = "none";
-    oneTimeMsg.style.display = "flex";
-  } else {
-    slider.addEventListener("scroll", () => {
-      const scrollLeft = slider.scrollLeft;
-      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-
-      if (scrollLeft >= maxScrollLeft - 5) {
-        localStorage.setItem("alreadyViewed", "true");
-        slider.style.display = "none";
-        oneTimeMsg.style.display = "flex";
-      }
-    });
-  }
 });
 </script>
     </body>
