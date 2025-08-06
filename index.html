@@ -216,7 +216,7 @@ img, .memory-image {
 <div id="sliderContainer" style="position: relative; width: 100%; height: auto; min-height: 320px;">
 
   <!-- SLIDER IMAGES -->
-  <div class="slider" id="slider"></div>
+  <div class="slider" id="slider" style="display: none;"></div>
 
   <!-- MESSAGE (hidden initially) -->
   <div id="oneTimeMessage" style="
@@ -300,20 +300,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const alreadyViewed = localStorage.getItem("alreadyViewed");
-  if (alreadyViewed) {
-    slider.style.display = "none";
-    oneTimeMsg.style.display = "flex";
-  } else {
-    // Detect full scroll to end
-    slider.addEventListener("scroll", () => {
-      const scrollLeft = slider.scrollLeft;
-      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-      if (scrollLeft >= maxScrollLeft - 5) {
-        localStorage.setItem("alreadyViewed", "true");
-        slider.style.display = "none";
-        oneTimeMsg.style.display = "flex";
-      }
-    });
+if (alreadyViewed) {
+  oneTimeMsg.style.display = "flex";
+} else {
+  slider.style.display = "flex"; // â show the slider now
+  oneTimeMsg.style.display = "none"; // just in case
+
+  // scroll logic
+  slider.addEventListener("scroll", () => {
+    const scrollLeft = slider.scrollLeft;
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+    if (scrollLeft >= maxScrollLeft - 5) {
+      localStorage.setItem("alreadyViewed", "true");
+      slider.style.display = "none";
+      oneTimeMsg.style.display = "flex";
+    }
+  });
   }
 
   // â Disable interactions
