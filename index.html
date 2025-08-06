@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy 18th Birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'PaintFont';
+      src: url('Paint-JpZDE.ttf') format('truetype');
+    }body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom, #fff0f6, #ffe6f0);
+  overflow-x: hidden;
+  position: relative;
+}
+
+.header {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #000000;
+  margin-top: 40px;
+}
+
+.message {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin: 20px;
+  padding: 10px 20px;
+  background-color: #fff0fa;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.2);
+}
+
+.suju-message {
+  font-family: 'PaintFont', cursive;
+  font-size: 1.2rem;
+  color: #c21760;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  text-align: center;
+}
+    
+.slider-line {
+  width: 200px;
+  height: 3px;
+  background-color: #d63384;
+  margin: 20px auto;
+  animation: expandLine 1.5s ease-out forwards;
+  border-radius: 5px;
+}
+
+@keyframes expandLine {
+  from { width: 0; opacity: 0; }
+  to { width: 200px; opacity: 1; }
+}
+
+.slider {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 20px;
+  scroll-behavior: smooth;
+}
+
+.slider img {
+  flex: 0 0 auto;
+  width: 225px;
+  height: 300px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(214, 51, 132, 0.2);
+  scroll-snap-align: center;
+}
+
+form {
+  text-align: center;
+  margin: 30px auto;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(214, 51, 132, 0.2);
+}
+
+input, textarea {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+button {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 20px;
+  background-color: #d63384;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.floating-emoji {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.3;
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); opacity: 0.2; }
+  50% { transform: translateY(-20px); opacity: 0.4; }
+}
+
+#tapHint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(214, 51, 132, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  z-index: 9999;
+  animation: fadeOut 4s ease-in-out forwards;
+  pointer-events: none;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+  
+/* Prevent long-press save, selection, and interaction */
+img, .memory-image {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  touch-action: none;
+}
+
+    input, textarea, select {
+  font-size: 16px;
+  touch-action: manipulation;
+}
+
+    @keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.95); }
+  10% { opacity: 1; transform: scale(1); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.95); }
+}
+
+    @keyframes fadeInStay {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+  </style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+  <source src="romantic.mp3" type="audio/mpeg">
+</audio>
+  <div id="tapHint">&#127925; Tap anywhere to play music</div>
+  <div class="floating-emoji" style="top: 10%; left: 5%">💖</div>
+  <div class="floating-emoji" style="top: 20%; right: 10%">🌸</div>
+  <div class="floating-emoji" style="top: 60%; left: 8%">💌</div>
+  <div class="floating-emoji" style="top: 70%; right: 15%">🎉</div>
+  <div class="floating-emoji" style="top: 30%; left: 85%">💕</div>  <h1 class="header">Today is Her Eighteenth Birthday 🎂</h1>
+  <div class="message">
+<div style="max-width: 800px; margin: 30px auto; text-align: center; padding: 20px;">
+  <!-- Suju's Personal Message -->
+  <div class="suju-message">
+    <p>To the girl who lights up today - and every day &#127775;</p>
+    <p>Eighteen marks not just a number, but a new chapter,<br>
+    filled with wonder &#10024;, strength, and quiet brilliance.<br>
+    You have grown like sunrise - gentle but unstoppable &#127802;.</p>
+    <p>I have seen the way your smile shifts the whole sky &#128149;<br>
+    The way your laugh can soften even the hardest days.<br>
+    And today, the world gets to celebrate you,<br>
+    just as you are: radiant, rare, unforgettable &#128525;</p>
+    <p style="margin-top: 10px;">-- from Suju &#128153;</p>
+  </div>
+
+  <!-- Public Message -->
+  <div style="background-color: #fff0fa; border-radius: 12px; padding: 15px 20px; box-shadow: 0 0 10px rgba(255, 105, 180, 0.2); font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 1.1rem; color: #d63384;">
+   <div style="background-color: #fff0fa; border-radius: 12px; padding: 15px 20px; box-shadow: 0 0 10px rgba(255, 105, 180, 0.2); font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 1.1rem; color: #d63384;">
+  <br><strong>Now it's your turn.</strong><br>
+  Leave her a message - a memory, a wish, a word.<br>
+  Let's make this day echo with kindness and joy. &#127800;&#128150;
+  </div>
+</div>
+  </div>
+<div class="slider-line"></div>
+
+<!-- NEW WRAPPER -->
+<div id="sliderContainer" style="position: relative; width: 100%; height: auto; min-height: 320px;">
+
+  <!-- SLIDER IMAGES -->
+  <div class="slider" id="slider"></div>
+
+  <!-- MESSAGE (hidden initially) -->
+  <div id="oneTimeMessage" style="
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff0fa;
+    font-family: 'PaintFont', cursive;
+    font-size: 1.5rem;
+    color: #c21760;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+    animation: fadeInStay 1.5s ease-in-out forwards;
+    padding: 20px;
+    text-align: center;
+    z-index: 5;
+  ">
+    Thank you for celebrating this special day &#127895;
+  </div>
+
+</div>
+    
+<form id="wishForm">
+  <h2 style="font-family: 'PaintFont', cursive; color: #c21760;">Send Her a Wish</h2>
+  <input type="text" name="name" placeholder="Your Name" required><br/>
+  <textarea name="message" placeholder="Your Message" rows="4" required></textarea><br/>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  const form = document.getElementById("wishForm");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // â Stop default browser form submit
+
+    const formData = new FormData(form);
+
+    fetch("https://formspree.io/f/xyzpnwye", {
+      method: "POST",
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        form.reset();
+        window.location.href = "thankyou.html"; // â Local redirect
+      } else {
+        alert("â Oops! Something went wrong.");
+      }
+    }).catch(error => {
+      alert("â ï¸ Error submitting the form.");
+    });
+  });
+    // Floating emoji generator
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Floating emoji generator (HTML-decimal encoded)
+  const emojis = ['&#128525;', '&#128151;', '&#127881;', '&#127775;', '&#10024;', '&#128147;', '&#129321;', '&#127881;', '&#128153;', '&#127872;'];
+
+  function createEmoji() {
+    const emoji = document.createElement('div');
+    emoji.classList.add('floating-emoji');
+    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.style.left = Math.random() * 100 + 'vw';
+    emoji.style.animationDuration = (4 + Math.random() * 6) + 's';
+    document.body.appendChild(emoji);
+    setTimeout(() => emoji.remove(), 10000);
+  }
+
+  setInterval(createEmoji, 800);
+
+  // Load images dynamically (pic1.jpg to pic6.jpg)
+  const slider = document.getElementById('slider');
+  const oneTimeMsg = document.getElementById('oneTimeMessage');
+
+  if (localStorage.getItem("alreadyViewed")) {
+    slider.style.display = "none";
+    oneTimeMsg.style.display = "flex";
+  } else {
+    for (let i = 1; i <= 6; i++) {
+      const img = document.createElement('img');
+      img.src = `pic${i}.jpg`;
+      img.alt = `Pic ${i}`;
+      img.onerror = () => {
+        img.src = 'placeholder.jpg'; // fallback
+        img.alt = 'Image not found';
+      };
+      slider.appendChild(img);
+    }
+
+    slider.addEventListener("scroll", () => {
+      const scrollLeft = slider.scrollLeft;
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+      if (scrollLeft >= maxScrollLeft - 5) {
+        localStorage.setItem("alreadyViewed", "true");
+        slider.style.display = "none";
+        oneTimeMsg.style.display = "flex";
+      }
+    });
+  }
+
+  // Music play once on interaction
+  let musicStarted = false;
+
+  function startMusic() {
+    if (musicStarted) return;
+
+    const bgMusic = document.getElementById("bgMusic");
+    if (bgMusic) {
+      bgMusic.volume = 0.5;
+      bgMusic.play().then(() => {
+        musicStarted = true;
+        console.log("Music started");
+      }).catch((err) => {
+        console.warn("Music autoplay blocked:", err);
+      });
+    }
+  }
+
+  document.body.addEventListener("click", startMusic, { once: true });
+  document.body.addEventListener("touchstart", startMusic, { once: true });
+
+  // Block right-click
+  document.addEventListener("contextmenu", e => e.preventDefault());
+
+  // Block select
+  document.addEventListener("selectstart", e => e.preventDefault());
+
+  // Block copy, cut, paste
+  ["copy", "cut", "paste"].forEach(event =>
+    document.addEventListener(event, e => e.preventDefault())
+  );
+
+  // Disable drag and hold on images
+  document.querySelectorAll("img, .memory-image").forEach(el => {
+    el.setAttribute("draggable", "false");
+    el.setAttribute("oncontextmenu", "return false");
+    el.setAttribute("onmousedown", "return false");
+  });
+
+  // Disable zoom gestures
+  document.addEventListener('gesturestart', function (e) {
+    e.preventDefault();
+  });
+});
+</script>
+    </body>
+</html>
