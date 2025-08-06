@@ -251,12 +251,13 @@ img, .memory-image {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ð Floating emoji generator
-  const emojis = ['ð','ð','ð','ð«','ð','ð','â¨','ð¸','ð·','ð'];
+  // ð Floating emoji generator (HTML-encoded)
+  const emojis = ['&#127872;', '&#128150;', '&#127881;', '&#128171;', '&#127873;', '&#128144;', '&#10024;', '&#127800;', '&#127799;', '&#128149;'];
+  
   function createEmoji() {
     const emoji = document.createElement('div');
     emoji.classList.add('floating-emoji');
-    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
     emoji.style.left = Math.random() * 100 + 'vw';
     emoji.style.animationDuration = (4 + Math.random() * 6) + 's';
     document.body.appendChild(emoji);
@@ -286,23 +287,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const slider = document.getElementById("slider");
   const oneTimeMsg = document.getElementById("oneTimeMessage");
 
+  // â Always load the images first
+  for (let i = 1; i <= 6; i++) {
+    const img = document.createElement("img");
+    img.src = `pic${i}.jpg`;
+    img.alt = `Pic ${i}`;
+    img.onerror = () => {
+      img.src = 'placeholder.jpg';
+      img.alt = 'Image not found';
+    };
+    slider.appendChild(img);
+  }
+
   const alreadyViewed = localStorage.getItem("alreadyViewed");
   if (alreadyViewed) {
     slider.style.display = "none";
     oneTimeMsg.style.display = "flex";
   } else {
-    // Load 6 images dynamically
-    for (let i = 1; i <= 6; i++) {
-      const img = document.createElement("img");
-      img.src = `pic${i}.jpg`;
-      img.alt = `Pic ${i}`;
-      img.onerror = () => {
-        img.src = 'placeholder.jpg';
-        img.alt = 'Image not found';
-      };
-      slider.appendChild(img);
-    }
-
     // Detect full scroll to end
     slider.addEventListener("scroll", () => {
       const scrollLeft = slider.scrollLeft;
@@ -326,8 +327,8 @@ document.addEventListener("DOMContentLoaded", () => {
     el.setAttribute("oncontextmenu", "return false");
     el.setAttribute("onmousedown", "return false");
   });
-  document.addEventListener('gesturestart', e.preventDefault());
-});
+  document.addEventListener('gesturestart', e => e.preventDefault());
+  });
 </script>
     </body>
 </html>
