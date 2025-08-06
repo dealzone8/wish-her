@@ -143,7 +143,19 @@ button {
   90% { opacity: 1; }
   100% { opacity: 0; }
 }
-    
+
+  
+/* Prevent long-press save, selection, and interaction */
+img, .memory-image {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  touch-action: none;
+}
 
   </style>
 </head>
@@ -269,6 +281,23 @@ document.body.addEventListener("click", startMusic, { once: true });
 document.body.addEventListener("touchstart", startMusic, { once: true });
 
 
+// Disable context menu (right-click / long-press)
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Disable text or image selection
+document.addEventListener("selectstart", e => e.preventDefault());
+
+// Disable copy, cut, paste
+["copy", "cut", "paste"].forEach(event =>
+  document.addEventListener(event, e => e.preventDefault())
+);
+
+// Disable drag & hold on images or custom image containers
+document.querySelectorAll("img, .memory-image").forEach(el => {
+  el.setAttribute("draggable", "false");
+  el.setAttribute("oncontextmenu", "return false");
+  el.setAttribute("onmousedown", "return false");
+});
 
   
 </script>
