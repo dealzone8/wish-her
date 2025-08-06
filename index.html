@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Happy 18th Birthday</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -157,6 +157,10 @@ img, .memory-image {
   touch-action: none;
 }
 
+    input, textarea, select {
+  font-size: 16px;
+  touch-action: manipulation;
+}
   </style>
 </head>
 <body>
@@ -297,6 +301,10 @@ document.querySelectorAll("img, .memory-image").forEach(el => {
   el.setAttribute("draggable", "false");
   el.setAttribute("oncontextmenu", "return false");
   el.setAttribute("onmousedown", "return false");
+});
+
+document.addEventListener('gesturestart', function (e) {
+  e.preventDefault();
 });
 
   
