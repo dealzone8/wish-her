@@ -250,86 +250,24 @@ img, .memory-image {
 </form>
 
 <script>
-  const form = document.getElementById("wishForm");
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault(); // â Stop default browser form submit
-
-    const formData = new FormData(form);
-
-    fetch("https://formspree.io/f/xyzpnwye", {
-      method: "POST",
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).then(response => {
-      if (response.ok) {
-        form.reset();
-        window.location.href = "thankyou.html"; // â Local redirect
-      } else {
-        alert("â Oops! Something went wrong.");
-      }
-    }).catch(error => {
-      alert("â ï¸ Error submitting the form.");
-    });
-  });
-    // Floating emoji generator
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Floating emoji generator (HTML-decimal encoded)
-  const emojis = ['&#128525;', '&#128151;', '&#127881;', '&#127775;', '&#10024;', '&#128147;', '&#129321;', '&#127881;', '&#128153;', '&#127872;'];
-
+  // ð Floating emoji generator
+  const emojis = ['ð','ð','ð','ð«','ð','ð','â¨','ð¸','ð·','ð'];
   function createEmoji() {
     const emoji = document.createElement('div');
     emoji.classList.add('floating-emoji');
-    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
     emoji.style.left = Math.random() * 100 + 'vw';
     emoji.style.animationDuration = (4 + Math.random() * 6) + 's';
     document.body.appendChild(emoji);
     setTimeout(() => emoji.remove(), 10000);
   }
-
   setInterval(createEmoji, 800);
 
-  // Load images dynamically (pic1.jpg to pic6.jpg)
-  const slider = document.getElementById('slider');
-const oneTimeMsg = document.getElementById('oneTimeMessage');
-
-// â Always load the images first
-for (let i = 1; i <= 6; i++) {
-  const img = document.createElement('img');
-  img.src = `pic${i}.jpg`;
-  img.alt = `Pic ${i}`;
-  img.onerror = () => {
-    img.src = 'placeholder.jpg'; // fallback
-    img.alt = 'Image not found';
-  };
-  slider.appendChild(img);
-}
-
-// â Then decide what to show
-if (localStorage.getItem("alreadyViewed")) {
-  slider.style.display = "none";
-  oneTimeMsg.style.display = "flex";
-} else {
-  slider.addEventListener("scroll", () => {
-    const scrollLeft = slider.scrollLeft;
-    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-
-    if (scrollLeft >= maxScrollLeft - 5) {
-      localStorage.setItem("alreadyViewed", "true");
-      slider.style.display = "none";
-      oneTimeMsg.style.display = "flex";
-    }
-  }
-
-  // Music play once on interaction
+  // ðµ Music trigger
   let musicStarted = false;
-
   function startMusic() {
     if (musicStarted) return;
-
     const bgMusic = document.getElementById("bgMusic");
     if (bgMusic) {
       bgMusic.volume = 0.5;
@@ -341,32 +279,54 @@ if (localStorage.getItem("alreadyViewed")) {
       });
     }
   }
-
   document.body.addEventListener("click", startMusic, { once: true });
   document.body.addEventListener("touchstart", startMusic, { once: true });
 
-  // Block right-click
+  // ð Image slider + message logic
+  const slider = document.getElementById("slider");
+  const oneTimeMsg = document.getElementById("oneTimeMessage");
+
+  const alreadyViewed = localStorage.getItem("alreadyViewed");
+  if (alreadyViewed) {
+    slider.style.display = "none";
+    oneTimeMsg.style.display = "flex";
+  } else {
+    // Load 6 images dynamically
+    for (let i = 1; i <= 6; i++) {
+      const img = document.createElement("img");
+      img.src = `pic${i}.jpg`;
+      img.alt = `Pic ${i}`;
+      img.onerror = () => {
+        img.src = 'placeholder.jpg';
+        img.alt = 'Image not found';
+      };
+      slider.appendChild(img);
+    }
+
+    // Detect full scroll to end
+    slider.addEventListener("scroll", () => {
+      const scrollLeft = slider.scrollLeft;
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+      if (scrollLeft >= maxScrollLeft - 5) {
+        localStorage.setItem("alreadyViewed", "true");
+        slider.style.display = "none";
+        oneTimeMsg.style.display = "flex";
+      }
+    });
+  }
+
+  // â Disable interactions
   document.addEventListener("contextmenu", e => e.preventDefault());
-
-  // Block select
   document.addEventListener("selectstart", e => e.preventDefault());
-
-  // Block copy, cut, paste
   ["copy", "cut", "paste"].forEach(event =>
     document.addEventListener(event, e => e.preventDefault())
   );
-
-  // Disable drag and hold on images
   document.querySelectorAll("img, .memory-image").forEach(el => {
     el.setAttribute("draggable", "false");
     el.setAttribute("oncontextmenu", "return false");
     el.setAttribute("onmousedown", "return false");
   });
-
-  // Disable zoom gestures
-  document.addEventListener('gesturestart', function (e) {
-    e.preventDefault();
-  });
+  document.addEventListener('gesturestart', e.preventDefault());
 });
 </script>
     </body>
