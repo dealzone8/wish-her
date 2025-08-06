@@ -253,7 +253,7 @@ img, .memory-image {
   const form = document.getElementById("wishForm");
 
   form.addEventListener("submit", function (e) {
-    e.preventDefault(); // â Stop default browser form submit
+    e.preventDefault();
 
     const formData = new FormData(form);
 
@@ -266,107 +266,96 @@ img, .memory-image {
     }).then(response => {
       if (response.ok) {
         form.reset();
-        window.location.href = "thankyou.html"; // â Local redirect
+        window.location.href = "thankyou.html";
       } else {
-        alert("â Oops! Something went wrong.");
+        alert("Oops! Something went wrong.");
       }
     }).catch(error => {
-      alert("â ï¸ Error submitting the form.");
+      alert("Error submitting the form.");
     });
   });
+
+  document.addEventListener("DOMContentLoaded", () => {
     // Floating emoji generator
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Floating emoji generator (HTML-decimal encoded)
-  const emojis = ['&#128525;', '&#128151;', '&#127881;', '&#127775;', '&#10024;', '&#128147;', '&#129321;', '&#127881;', '&#128153;', '&#127872;'];
-
-  function createEmoji() {
-    const emoji = document.createElement('div');
-    emoji.classList.add('floating-emoji');
-    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-    emoji.style.left = Math.random() * 100 + 'vw';
-    emoji.style.animationDuration = (4 + Math.random() * 6) + 's';
-    document.body.appendChild(emoji);
-    setTimeout(() => emoji.remove(), 10000);
-  }
-
-  setInterval(createEmoji, 800);
-
-  // Load images dynamically (pic1.jpg to pic6.jpg)
-  const slider = document.getElementById('slider');
-  const oneTimeMsg = document.getElementById('oneTimeMessage');
-
-  if (localStorage.getItem("alreadyViewed")) {
-    slider.style.display = "none";
-    oneTimeMsg.style.display = "flex";
-  } else {
-    for (let i = 1; i <= 6; i++) {
-      const img = document.createElement('img');
-      img.src = `pic${i}.jpg`;
-      img.alt = `Pic ${i}`;
-      img.onerror = () => {
-        img.src = 'placeholder.jpg'; // fallback
-        img.alt = 'Image not found';
-      };
-      slider.appendChild(img);
+    const emojis = ['&#128525;', '&#128151;', '&#127881;', '&#127775;', '&#10024;', '&#128147;', '&#129321;', '&#127881;', '&#128153;', '&#127872;'];
+    function createEmoji() {
+      const emoji = document.createElement('div');
+      emoji.classList.add('floating-emoji');
+      emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+      emoji.style.left = Math.random() * 100 + 'vw';
+      emoji.style.animationDuration = (4 + Math.random() * 6) + 's';
+      document.body.appendChild(emoji);
+      setTimeout(() => emoji.remove(), 10000);
     }
+    setInterval(createEmoji, 800);
 
-    slider.addEventListener("scroll", () => {
-      const scrollLeft = slider.scrollLeft;
-      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+    // Load images
+    const slider = document.getElementById('slider');
+    const oneTimeMsg = document.getElementById('oneTimeMessage');
 
-      if (scrollLeft >= maxScrollLeft - 5) {
-        localStorage.setItem("alreadyViewed", "true");
-        slider.style.display = "none";
-        oneTimeMsg.style.display = "flex";
+    if (localStorage.getItem("alreadyViewed")) {
+      slider.style.display = "none";
+      oneTimeMsg.style.display = "flex";
+    } else {
+      for (let i = 1; i <= 6; i++) {
+        const img = document.createElement('img');
+        img.src = `pic${i}.jpg`;
+        img.alt = `Pic ${i}`;
+        img.onerror = () => {
+          img.src = 'placeholder.jpg';
+          img.alt = 'Image not found';
+        };
+        slider.appendChild(img);
       }
-    });
-  }
 
-  // Music play once on interaction
-  let musicStarted = false;
+      slider.addEventListener("scroll", () => {
+        const scrollLeft = slider.scrollLeft;
+        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
 
-  function startMusic() {
-    if (musicStarted) return;
-
-    const bgMusic = document.getElementById("bgMusic");
-    if (bgMusic) {
-      bgMusic.volume = 0.5;
-      bgMusic.play().then(() => {
-        musicStarted = true;
-        console.log("Music started");
-      }).catch((err) => {
-        console.warn("Music autoplay blocked:", err);
+        if (scrollLeft >= maxScrollLeft - 5) {
+          localStorage.setItem("alreadyViewed", "true");
+          slider.style.display = "none";
+          oneTimeMsg.style.display = "flex";
+        }
       });
     }
-  }
 
-  document.body.addEventListener("click", startMusic, { once: true });
-  document.body.addEventListener("touchstart", startMusic, { once: true });
+    // Music on interaction
+    let musicStarted = false;
+    function startMusic() {
+      if (musicStarted) return;
+      const bgMusic = document.getElementById("bgMusic");
+      if (bgMusic) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().then(() => {
+          musicStarted = true;
+        }).catch((err) => {
+          console.warn("Music autoplay blocked:", err);
+        });
+      }
+    }
+    document.body.addEventListener("click", startMusic, { once: true });
+    document.body.addEventListener("touchstart", startMusic, { once: true });
 
-  // Block right-click
-  document.addEventListener("contextmenu", e => e.preventDefault());
+    // Copy/selection prevention
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("selectstart", e => e.preventDefault());
+    ["copy", "cut", "paste"].forEach(event =>
+      document.addEventListener(event, e => e.preventDefault())
+    );
 
-  // Block select
-  document.addEventListener("selectstart", e => e.preventDefault());
+    // Image drag/zoom prevention
+    document.querySelectorAll("img, .memory-image").forEach(el => {
+      el.setAttribute("draggable", "false");
+      el.setAttribute("oncontextmenu", "return false");
+      el.setAttribute("onmousedown", "return false");
+    });
 
-  // Block copy, cut, paste
-  ["copy", "cut", "paste"].forEach(event =>
-    document.addEventListener(event, e => e.preventDefault())
-  );
-
-  // Disable drag and hold on images
-  document.querySelectorAll("img, .memory-image").forEach(el => {
-    el.setAttribute("draggable", "false");
-    el.setAttribute("oncontextmenu", "return false");
-    el.setAttribute("onmousedown", "return false");
+    // Disable zoom gestures
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+    });
   });
-
-  // Disable zoom gestures
-  document.addEventListener('gesturestart', function (e) {
-    e.preventDefault();
-  });
-});
 </script>
     </body>
 </html>
