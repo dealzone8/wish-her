@@ -168,6 +168,11 @@ img, .memory-image {
   90% { opacity: 1; }
   100% { opacity: 0; transform: scale(0.95); }
 }
+
+    @keyframes fadeInStay {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
   </style>
 </head>
 <body>
@@ -176,9 +181,6 @@ img, .memory-image {
   <source src="romantic.mp3" type="audio/mpeg">
 </audio>
   <div id="tapHint">&#127925; Tap anywhere to play music</div>
-  <div id="oneTimeMessage" style="display: none; text-align: center; padding: 30px; font-family: 'PaintFont', cursive; font-size: 1.5rem; color: #c21760; animation: fadeInOut 4s ease-in-out;">
-  Thank you for celebrating this special day &#128150;
-</div>
   <div class="floating-emoji" style="top: 10%; left: 5%">💖</div>
   <div class="floating-emoji" style="top: 20%; right: 10%">🌸</div>
   <div class="floating-emoji" style="top: 60%; left: 8%">💌</div>
@@ -209,7 +211,36 @@ img, .memory-image {
 </div>
   </div>
 <div class="slider-line"></div>
-<div class="slider" id="slider"></div>
+
+<!-- NEW WRAPPER -->
+<div id="sliderContainer" style="position: relative; width: 100%; height: auto; min-height: 320px;">
+
+  <!-- SLIDER IMAGES -->
+  <div class="slider" id="slider"></div>
+
+  <!-- MESSAGE (hidden initially) -->
+  <div id="oneTimeMessage" style="
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff0fa;
+    font-family: 'PaintFont', cursive;
+    font-size: 1.5rem;
+    color: #c21760;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+    animation: fadeInStay 1.5s ease-in-out forwards;
+    padding: 20px;
+    text-align: center;
+    z-index: 5;
+  ">
+    Thank you for celebrating this special day ð
+  </div>
+
+</div>
     
 <form id="wishForm">
   <h2 style="font-family: 'PaintFont', cursive; color: #c21760;">Send Her a Wish</h2>
@@ -323,15 +354,16 @@ document.addEventListener('gesturestart', function (e) {
 
   if (localStorage.getItem("alreadyViewed")) {
     slider.style.display = "none";
+    oneTimeMsg.style.display = "flex";
   } else {
     slider.addEventListener("scroll", () => {
       const scrollLeft = slider.scrollLeft;
       const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
 
-      if (scrollLeft >= maxScrollLeft - 5) {  // near end
-        oneTimeMsg.style.display = "block";
-        slider.style.display = "none";
+      if (scrollLeft >= maxScrollLeft - 5) {
         localStorage.setItem("alreadyViewed", "true");
+        slider.style.display = "none";
+        oneTimeMsg.style.display = "flex";
       }
     });
   }
