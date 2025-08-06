@@ -250,6 +250,31 @@ img, .memory-image {
 </form>
 
 <script>
+const form = document.getElementById("wishForm");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // â Stop default browser form submit
+
+    const formData = new FormData(form);
+
+    fetch("https://formspree.io/f/xyzpnwye", {
+      method: "POST",
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        form.reset();
+        window.location.href = "thankyou.html"; // â Local redirect
+      } else {
+        alert("â Oops! Something went wrong.");
+      }
+    }).catch(error => {
+      alert("â ï¸ Error submitting the form.");
+    });
+  });
+  
 document.addEventListener("DOMContentLoaded", () => {
   // ð Floating emoji generator (HTML-encoded)
   const emojis = ['&#127872;', '&#128150;', '&#127881;', '&#128171;', '&#127873;', '&#128144;', '&#10024;', '&#127800;', '&#127799;', '&#128149;'];
