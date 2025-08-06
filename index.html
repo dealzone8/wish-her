@@ -161,6 +161,13 @@ img, .memory-image {
   font-size: 16px;
   touch-action: manipulation;
 }
+
+    @keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.95); }
+  10% { opacity: 1; transform: scale(1); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.95); }
+}
   </style>
 </head>
 <body>
@@ -169,6 +176,9 @@ img, .memory-image {
   <source src="romantic.mp3" type="audio/mpeg">
 </audio>
   <div id="tapHint">&#127925; Tap anywhere to play music</div>
+  <div id="oneTimeMessage" style="display: none; text-align: center; padding: 30px; font-family: 'PaintFont', cursive; font-size: 1.5rem; color: #c21760; animation: fadeInOut 4s ease-in-out;">
+  Thank you for celebrating this special day &#128150;
+</div>
   <div class="floating-emoji" style="top: 10%; left: 5%">💖</div>
   <div class="floating-emoji" style="top: 20%; right: 10%">🌸</div>
   <div class="floating-emoji" style="top: 60%; left: 8%">💌</div>
@@ -307,7 +317,25 @@ document.addEventListener('gesturestart', function (e) {
   e.preventDefault();
 });
 
-  
+  document.addEventListener("DOMContentLoaded", () => {
+  const slider = document.getElementById('slider');
+  const oneTimeMsg = document.getElementById('oneTimeMessage');
+
+  if (localStorage.getItem("alreadyViewed")) {
+    slider.style.display = "none";
+  } else {
+    slider.addEventListener("scroll", () => {
+      const scrollLeft = slider.scrollLeft;
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+      if (scrollLeft >= maxScrollLeft - 5) {  // near end
+        oneTimeMsg.style.display = "block";
+        slider.style.display = "none";
+        localStorage.setItem("alreadyViewed", "true");
+      }
+    });
+  }
+});
 </script>
     </body>
 </html>
